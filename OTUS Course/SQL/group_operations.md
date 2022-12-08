@@ -18,7 +18,8 @@
 
 SQL request
 
-```SQL SELECT SUM(price*amount) AS Total_cost, SUM(amount) AS Total_amount
+```SQL
+SELECT SUM(price*amount) AS Total_cost, SUM(amount) AS Total_amount
 FROM book;
 
 SELECT author,
