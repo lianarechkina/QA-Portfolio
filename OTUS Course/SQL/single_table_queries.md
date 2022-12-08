@@ -1,11 +1,11 @@
 ## Задание
 ### Составьте запросы:
-a) Выведите значение колонки ContactName
-b) Выведите все возможные значения колонки Country
-c) Выведите все записи, где City имеет значение London
-d) Выведите все записи, где City не равен London
-e) Выберите все записи, где Country равна Mexico и Postal Code 05021
-f) Выберете все записи у которых Country равна Mexico или Sweden
+1. Выведите значение колонки ContactName
+2. Выведите все возможные значения колонки Country
+3. Выведите все записи, где City имеет значение London
+4. Выведите все записи, где City не равен London
+5. Выберите все записи, где Country равна Mexico и Postal Code 05021
+6. Выберете все записи у которых Country равна Mexico или Sweden
 
 **Структура и наполнение таблицы otusQA**:
 | CustomerID | CustomerName                       | ContactName        | Address                       | City        | PostalCode | Country |
@@ -17,19 +17,20 @@ f) Выберете все записи у которых Country равна Mex
 | 5          | Berglunds snabbköp                 | Christina Berglund | Berguvsvägen 8                | Luleå       | S-958 22   | Sweden  |
 
 SQL request
-```SQL a) SELECT contactname FROM otusQA
+```SQL 
+1. SELECT contactname FROM otusQA
 
-b) SELECT DISTINCT country FROM otusQA
+2. SELECT DISTINCT country FROM otusQA
 
-c) SELECT * FROM otusQA
+3. SELECT * FROM otusQA
 WHERE city = 'London';
 
-d) SELECT * FROM otusQA
+4. SELECT * FROM otusQA
 WHERE city != 'London';
 
-e) SELECT * FROM otusQA
+5. SELECT * FROM otusQA
 WHERE country = 'Mexico' AND postalcode = '05021';
 
-f) SELECT * FROM otusQA
+6. SELECT * FROM otusQA
 WHERE country IN ('Mexico', 'Sweden');
 ```
