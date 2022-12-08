@@ -8,15 +8,13 @@ e) Выберите все записи, где Country равна Mexico и Pos
 f) Выберете все записи у которых Country равна Mexico или Sweden
 
 **Структура и наполнение таблицы otusQA**:
-+-------------+------------+---------+-------------+------------+---------+-------------+------------+---------+-------------+------------+-+
 | CustomerID | CustomerName                       | ContactName        | Address                       | City        | PostalCode | Country |
-+------------+------------------------------------+--------------------+-------------------------------+-------------+------------+---------+
+|---|---|---|---|---|---|---|
 | 1          | Alfreds Futterkiste                | Maria Anders       | Obere Str. 57                 | Berlin      | 12209      | Germany |
 | 2          | Ana Trujillo Emparedados y helados | Ana Trujillo       | Avda. de la Constitución 2222 | México D.F. | 05021      | Mexico  |
 | 3          | Antonio Moreno Taquería            | Antonio Moreno     | Mataderos 2312                | México D.F. | 05023      | Mexico  |
 | 4          | Around the Horn                    | Thomas Hardy       | 120 Hanover Sq.               | London      | WA1 1DP    | UK      |
 | 5          | Berglunds snabbköp                 | Christina Berglund | Berguvsvägen 8                | Luleå       | S-958 22   | Sweden  |
-+------------+------------------------------------+--------------------+-------------------------------+-------------+------------+---------+
 
 SQL request
 ```SQL a) SELECT contactname FROM otusQA
