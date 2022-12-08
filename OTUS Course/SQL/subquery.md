@@ -10,8 +10,9 @@
 | 5       | Игрок                 | Достоевский Ф.М. | 480.50 | 10     |
 | 6       | Стихотворения и поэмы | Есенин С.А.      | 650.00 | 15     |
 
-SQL reques
-```SQL SELECT author, title, price, amount, price*amount AS cost,
+SQL request
+```SQL
+SELECT author, title, price, amount, price*amount AS cost,
 ROUND((price*amount/(SELECT SUM(price*amount) FROM book))*100,2) AS total
 FROM book
 ORDER BY total DESC;
