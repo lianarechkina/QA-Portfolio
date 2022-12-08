@@ -21,3 +21,5 @@ As part of this task, I compiled a **table of states**, understood how to analyz
 As part of this task, I got acquainted with **HTTP**, studied the basic HTTP methods, what the URL consists of, what the HTTP request and response look like, and completed tasks from the Challenger API in **Postman**. I have familiarized myself with **REST** and authorization types (basic authentication, **bearer token**)
 ### [Exploratory Testing](OTUS%20Course/Exploratory%20Testing)
 As part of this task, I studied the types of exploratory tours, conducted a exploratory tour of a supermodel and a supporting actor for an online store of digital and household goods. I have compiled a report on testing and bug reports on the errors found.
+### [SQL](OTUS%20Course/SQL)
+I learned how to formulate, create and debug simple SQL queries.
