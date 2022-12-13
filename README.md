@@ -1,5 +1,5 @@
 # Portfolio
-
+### [Resume](OTUS%20Course/Resources/Resume-Rechkina.pdf)
 ## Tasks
 ### [1. MindMap](OTUS%20Course/1.%20MindMap.png) 
 I created a mindmap for the site livelib.ru . As part of this task, I learned how to structure information and track connections, highlight functionality, and break it down to lower levels
