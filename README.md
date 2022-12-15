@@ -2,7 +2,7 @@
 ### [Resume](OTUS%20Course/Resources/Resume-Rechkina.pdf)
 ## Tasks
 ### [MindMap](OTUS%20Course//MindMap) 
-I created a mindmap for the site livelib.ru . As part of this task, I learned how to structure information and track connections, highlight functionality, and break it down to lower levels
+I created a MindMap for an online pharmacy and book recommendation service. As part of this task, I learned how to structure information and track connections, highlight functionality and break it down into lower levels
 ### [2. Use Cases](OTUS%20Course/2.%20Use%20Case.md) 
 As part of this task, I learned how to write **use cases** and why customers, developers, testers and the team need them
 ### [3.1. Test Cases](OTUS%20Course/3.1.%20Test%20Cases.md)
