@@ -5,7 +5,7 @@
 I created a MindMap for an online pharmacy and book recommendation service. As part of this task, I learned how to structure information and track connections, highlight functionality and break it down into lower levels
 ### [Use Cases](OTUS%20Course/Use%20Cases) 
 As part of this task, I learned how to write **use cases** and why customers, developers, testers and the team need them
-### [3.1. Test Cases](OTUS%20Course/3.1.%20Test%20Cases.md)
+### [Test Cases](OTUS%20Course//Test%20cases)
 As part of this task, I learned how to write **test cases**: how to write the name of the test case, what is the difference between **Priority** and **Severity**, I learned how to work with **Jira**, Test IT, Qase.io
 ### [3.2. Check list](OTUS%20Course/3.2.%20Check%20list.md)
 As part of this task, I learned how to write **checklists**, understood the principle of **one point = one check**, remembered the statuses of the checks performed
