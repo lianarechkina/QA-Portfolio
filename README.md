@@ -9,7 +9,7 @@ As part of this task, I learned how to write **use cases** and why customers, de
 As part of this task, I learned how to write **test cases**: how to write the name of the test case, what is the difference between **Priority** and **Severity**, I learned how to work with **Jira**, Test IT, Qase.io
 ### [Check list](OTUS%20Course/3.2.%20Check%20list.md)
 As part of this task, I learned how to write **checklists**, understood the principle of **one point = one check**, remembered the statuses of the checks performed
-### [Bug report](OTUS%20Course/4.%20Bug%20report.md) 
+### [Bug reports](OTUS%20Course/Bug%20reports) 
 As part of this task, I found and described bugs in the **bug report**, studied the **life cycle** of the bug report
 ### [Boundaries & Equivalence partitioning](OTUS%20Course/5.%20Boundaries%20&%20Equivalence%20partitioning.md) 
 As part of this task, I began to study test development methods, learned how to distinguish **equivalence classes** and **boundary values**
