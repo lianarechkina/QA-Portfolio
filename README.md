@@ -17,7 +17,7 @@ As part of this task, I began to study test development methods, learned how to 
 As part of this task, I compiled a **decision-making table**, learned how to organize complex logic and make all combinations of conditions and states
 ### [State and Transition Diagram (Registration)](OTUS%20Course/7.%20State%20and%20Transition%20Diagram%20(Registration).md) 
 As part of this task, I compiled a **table of states**, understood how to analyze the operation of the application as a whole, studied what are the **states of the object** in the system and the transitions between them, learned how transitions and states are displayed on the diagram
-### [API CHALLENGER.postman_collection](OTUS%20Course/API%20CHALLENGER.postman_collection.json) 
+### [API Testing](OTUS%20Course/API) 
 As part of this task, I got acquainted with **HTTP**, studied the basic HTTP methods, what the URL consists of, what the HTTP request and response look like, and completed tasks from the Challenger API in **Postman**. I have familiarized myself with **REST** and authorization types (basic authentication, **bearer token**)
 ### [Exploratory Testing](OTUS%20Course/Exploratory%20Testing)
 As part of this task, I studied the types of exploratory tours, conducted a exploratory tour of a supermodel and a supporting actor for an online store of digital and household goods. I have compiled a report on testing and bug reports on the errors found.
