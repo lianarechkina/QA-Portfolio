@@ -1,0 +1,2820 @@
+{
+	"info": {
+		"_postman_id": "2ecf3d2e-be7b-43f9-a3f0-876654425b83",
+		"name": "AT for LIIS",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "sign-in tests",
+			"item": [
+				{
+					"name": "Valid sign-in",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set(\"users.1.name\", Utils.GenerateGUID())"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Sign-in status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"Check sign-in response body\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.username).to.eql(pm.collectionVariables.get(\"users.1.name\"));",
+									"    pm.expect(jsonData.email).to.eql(pm.collectionVariables.get(\"users.1.name\")+\"@mailbox.com\");",
+									"    pm.expect(jsonData.hasOwnProperty(\"password\")).to.eql(true);",
+									"    pm.expect(jsonData.hasOwnProperty(\"id\")).to.eql(true);",
+									"    pm.collectionVariables.set(\"users.1.id\", jsonData.id);",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"{{users.1.name}}\",\n    \"email\": \"{{users.1.name}}@mailbox.com\",\n    \"password\": \"{{password}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{liis_url}}/{{tester}}/sign-in",
+							"host": [
+								"{{liis_url}}"
+							],
+							"path": [
+								"{{tester}}",
+								"sign-in"
+							]
+						},
+						"description": "Required fields: username, email, password"
+					},
+					"response": []
+				},
+				{
+					"name": "Valid sign-in (user 2)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set(\"users.2.name\", Utils.GenerateGUID())"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Sign-in status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"Check sign-in response body\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.username).to.eql(pm.collectionVariables.get(\"users.2.name\"));",
+									"    pm.expect(jsonData.email).to.eql(pm.collectionVariables.get(\"users.2.name\")+\"@mailbox.com\");",
+									"    pm.expect(jsonData.hasOwnProperty(\"password\")).to.eql(true);",
+									"    pm.expect(jsonData.hasOwnProperty(\"id\")).to.eql(true);",
+									"    pm.collectionVariables.set(\"users.2.id\", jsonData.id);",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"{{users.2.name}}\",\n    \"email\": \"{{users.2.name}}@mailbox.com\",\n    \"password\": \"{{password}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{liis_url}}/{{tester}}/sign-in",
+							"host": [
+								"{{liis_url}}"
+							],
+							"path": [
+								"{{tester}}",
+								"sign-in"
+							]
+						},
+						"description": "Required fields: username, email, password"
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid sign-in (duplicate username)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Sign-in status code is 409 for conflicted username\", function () {",
+									"    pm.response.to.have.status(409);",
+									"});",
+									"",
+									"pm.test(\"Check sign-in response body for conflicted username\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.eql(\"User with this username or email already exists\");",
+									"    pm.expect(jsonData.type).to.eql(\"error\");",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"{{users.1.name}}\",\n    \"email\": \"{{$guid}}@mailbox.com\",\n    \"password\": \"{{password}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{liis_url}}/{{tester}}/sign-in",
+							"host": [
+								"{{liis_url}}"
+							],
+							"path": [
+								"{{tester}}",
+								"sign-in"
+							]
+						},
+						"description": "Required fields: username, email, password"
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid sign-in (duplicate email)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Sign-in status code is 409 for conflicted email\", function () {",
+									"    pm.response.to.have.status(409);",
+									"});",
+									"",
+									"pm.test(\"Check sign-in response body for conflicted email\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.eql(\"User with this username or email already exists\");",
+									"    pm.expect(jsonData.type).to.eql(\"error\");",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"{{$guid}}\",\n    \"email\": \"{{users.1.name}}@mailbox.com\",\n    \"password\": \"{{password}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{liis_url}}/{{tester}}/sign-in",
+							"host": [
+								"{{liis_url}}"
+							],
+							"path": [
+								"{{tester}}",
+								"sign-in"
+							]
+						},
+						"description": "Required fields: username, email, password"
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid sign-in (duplicate username and email)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Sign-in status code is 409 for conflicted username and email\", function () {",
+									"    pm.response.to.have.status(409);",
+									"});",
+									"",
+									"pm.test(\"Check sign-in response body for conflicted username and email\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.eql(\"User with this username or email already exists\");",
+									"    pm.expect(jsonData.type).to.eql(\"error\");",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"{{users.1.name}}\",\n    \"email\": \"{{users.1.name}}@mailbox.com\",\n    \"password\": \"{{password}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{liis_url}}/{{tester}}/sign-in",
+							"host": [
+								"{{liis_url}}"
+							],
+							"path": [
+								"{{tester}}",
+								"sign-in"
+							]
+						},
+						"description": "Required fields: username, email, password"
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid sign-in (empty username)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Sign-in status code is 409 for empty username\", function () {",
+									"    pm.response.to.have.status(409);",
+									"});",
+									"",
+									"pm.test(\"Check sign-in response body for empty username\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.eql(\"User with this username or email already exists\");",
+									"    pm.expect(jsonData.type).to.eql(\"error\");",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"\",\n    \"email\": \"{{$guid}}@mailbox.com\",\n    \"password\": \"{{$guid}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{liis_url}}/{{tester}}/sign-in",
+							"host": [
+								"{{liis_url}}"
+							],
+							"path": [
+								"{{tester}}",
+								"sign-in"
+							]
+						},
+						"description": "Required fields: username, email, password"
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid sign-in (maximum length of username)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Sign-in status code is 422 for maximum length 80 of username\", function () {",
+									"    pm.response.to.have.status(422);",
+									"});",
+									"",
+									"pm.test(\"Check sign-in response body for maximum length 80 of username\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.username[0]).to.eql(\"Longer than maximum length 80.\");",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"{{$guid}}Jshrghoiawhgoiheoighaewhoikrwglsdkhgklshlkgff\",\n    \"email\": \"{{$guid}}@mailbox.com\",\n    \"password\": \"{{$guid}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{liis_url}}/{{tester}}/sign-in",
+							"host": [
+								"{{liis_url}}"
+							],
+							"path": [
+								"{{tester}}",
+								"sign-in"
+							]
+						},
+						"description": "Required fields: username, email, password"
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid sign-in (empty password)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Sign-in status code is 500 for empty password\", function () {",
+									"    pm.response.to.have.status(500);",
+									"});",
+									"",
+									"pm.test(\"Check sign-in response body for empty password\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.eql(\"Internal Server Error\");",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"{{$guid}}\",\n    \"email\": \"{{$guid}}@mailbox.com\",\n    \"password\": \"\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{liis_url}}/{{tester}}/sign-in",
+							"host": [
+								"{{liis_url}}"
+							],
+							"path": [
+								"{{tester}}",
+								"sign-in"
+							]
+						},
+						"description": "Required fields: username, email, password"
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid sign-in (maximum length of password)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Sign-in status code is 422 for maximum length 200 of password\", function () {",
+									"    pm.response.to.have.status(422);",
+									"});",
+									"",
+									"pm.test(\"Check sign-in response body for maximum length 200 of password\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.password[0]).to.eql(\"Longer than maximum length 200.\");",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"{{$guid}}\",\n    \"email\": \"{{$guid}}@mailbox.com\",\n    \"password\": \"a3b50735-e59d-4cf7-9953-b96c2ecdcbf0Jshrghoiawhgoiheoighaewhoikrwglsdkhgklshlkgffa3b50735-e59d-4cf7-9953-b96c2ecdcbf0Jshrghoiawhgoiheoighaewhoikrwglsdkhgklshlkgffa3b50735-e59d-4cf7-9953-b96c2ecdcbf0Jsh\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{liis_url}}/{{tester}}/sign-in",
+							"host": [
+								"{{liis_url}}"
+							],
+							"path": [
+								"{{tester}}",
+								"sign-in"
+							]
+						},
+						"description": "Required fields: username, email, password"
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid sign-in (empty email)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Sign-in status code is 409 for empty email\", function () {",
+									"    pm.response.to.have.status(409);",
+									"});",
+									"",
+									"pm.test(\"Check sign-in response body for empty email\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.eql(\"User with this username or email already exists\");",
+									"    pm.expect(jsonData.type).to.eql(\"error\");",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"{{$guid}}\",\n    \"email\": \"\",\n    \"password\": \"{{$guid}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{liis_url}}/{{tester}}/sign-in",
+							"host": [
+								"{{liis_url}}"
+							],
+							"path": [
+								"{{tester}}",
+								"sign-in"
+							]
+						},
+						"description": "Required fields: username, email, password"
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid sign-in (maximum length of email)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Sign-in status code is 422 for maximum length 120 of email\", function () {",
+									"    pm.response.to.have.status(422);",
+									"});",
+									"",
+									"pm.test(\"Check sign-in response body for maximum length 120 of password\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.email[0]).to.eql(\"Longer than maximum length 120.\");",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"{{$guid}}\",\n    \"email\": \"{{$guid}}Jshrghoiawhgoiheoighaewhoikrwglsdkhgklshlkgffa3b50735-e59d-4cf7-9953-b96c2ecdcbf0Jshr\",\n    \"password\": \"{{$guid}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{liis_url}}/{{tester}}/sign-in",
+							"host": [
+								"{{liis_url}}"
+							],
+							"path": [
+								"{{tester}}",
+								"sign-in"
+							]
+						},
+						"description": "Required fields: username, email, password"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Create post tests",
+			"item": [
+				{
+					"name": "Create post by user 1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Create post by user 1 status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"Check post creation response body by user 1\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.title).to.eql(pm.collectionVariables.get(\"posts.1.title\"));",
+									"    pm.expect(jsonData.content).to.eql(pm.collectionVariables.get(\"posts.1.content\"));",
+									"    pm.expect(''+jsonData.author).to.eql(''+pm.collectionVariables.get(\"users.1.id\"));",
+									"    pm.expect(jsonData.hasOwnProperty(\"publication_datetime\")).to.eql(true);",
+									"    pm.collectionVariables.set(\"posts.1.id\", jsonData.id);",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set(\"posts.1.title\", Utils.GenerateGUID())",
+									"pm.collectionVariables.set(\"posts.1.content\", Utils.GenerateGUID())"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{users.1.name}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"{{posts.1.title}}\",\n    \"content\": \"{{posts.1.content}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{liis_url}}/{{tester}}/posts",
+							"host": [
+								"{{liis_url}}"
+							],
+							"path": [
+								"{{tester}}",
+								"posts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create post by user 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Create post by user 2 status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"Check post creation response body by user 2\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.title).to.eql(pm.collectionVariables.get(\"posts.2.title\"));",
+									"    pm.expect(jsonData.content).to.eql(pm.collectionVariables.get(\"posts.2.content\"));",
+									"    pm.expect(''+jsonData.author).to.eql(''+pm.collectionVariables.get(\"users.2.id\"));",
+									"    pm.expect(jsonData.hasOwnProperty(\"publication_datetime\")).to.eql(true);",
+									"    pm.collectionVariables.set(\"posts.2.id\", jsonData.id);",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set(\"posts.2.title\", Utils.GenerateGUID())",
+									"pm.collectionVariables.set(\"posts.2.content\", Utils.GenerateGUID())"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "{{users.2.name}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"{{posts.2.title}}\",\n    \"content\": \"{{posts.2.content}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{liis_url}}/{{tester}}/posts",
+							"host": [
+								"{{liis_url}}"
+							],
+							"path": [
+								"{{tester}}",
+								"posts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid post creation (maximum length of title)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Post creation status code is 422 for maximum length 80 of title\", function () {",
+									"    pm.response.to.have.status(422);",
+									"});",
+									"",
+									"pm.test(\"Post creation response body for maximum length 80 of title\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.title[0]).to.eql(\"Longer than maximum length 80.\");",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{users.1.name}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"{{$guid}}Jshrghoiawhgoiheoighaewhoikrwglsdkhgklshlkgff\",\n    \"content\": \"{{$guid}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{liis_url}}/{{tester}}/posts",
+							"host": [
+								"{{liis_url}}"
+							],
+							"path": [
+								"{{tester}}",
+								"posts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid post creation (maximum length of content)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Post creation status code is 422 for maximum length 180 of content\", function () {",
+									"    pm.response.to.have.status(422);",
+									"});",
+									"",
+									"pm.test(\"Post creation response body for maximum length 180 of content\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.content[0]).to.eql(\"Longer than maximum length 180.\");",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{users.1.name}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"{{$guid}}\",\n    \"content\": \"a3b50735-e59d-4cf7-9953-b96c2ecdcbf0Jshrghoiawhgoiheoighaewhoikrwglsdkhgklshlkgffa3b50735-e59d-4cf7-9953-b96c2ecdcbf0Jshr b96c2ecdcbf0Jshrghoiawhgoiheoighaewhoikrwglsdkhgklshlkgffa3\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{liis_url}}/{{tester}}/posts",
+							"host": [
+								"{{liis_url}}"
+							],
+							"path": [
+								"{{tester}}",
+								"posts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid post creation (maximum length of title, content)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Post creation status code is 422 for maximum length of title, content\", function () {",
+									"    pm.response.to.have.status(422);",
+									"});",
+									"",
+									"pm.test(\"Post creation response body for maximum length of title, content\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.title[0]).to.eql(\"Longer than maximum length 80.\");",
+									"    pm.expect(jsonData.content[0]).to.eql(\"Longer than maximum length 180.\");",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{users.1.name}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"{{$guid}}Jshrghoiawhgoiheoighaewhoikrwglsdkhgklshlkgff\",\n    \"content\": \"a3b50735-e59d-4cf7-9953-b96c2ecdcbf0Jshrghoiawhgoiheoighaewhoikrwglsdkhgklshlkgffa3b50735-e59d-4cf7-9953-b96c2ecdcbf0Jshr b96c2ecdcbf0Jshrghoiawhgoiheoighaewhoikrwglsdkhgklshlkgffa3\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{liis_url}}/{{tester}}/posts",
+							"host": [
+								"{{liis_url}}"
+							],
+							"path": [
+								"{{tester}}",
+								"posts"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Get posts tests",
+			"item": [
+				{
+					"name": "Get posts",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Check created posts\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    let id1 = pm.collectionVariables.get(\"posts.1.id\");",
+									"    let post1Found = false;",
+									"    let id2 = pm.collectionVariables.get(\"posts.2.id\");",
+									"    let post2Found = false;",
+									"    for (let i = 0; i < jsonData.length; i++) {",
+									"        if (jsonData[i].id == id1) {",
+									"            pm.expect(jsonData[i].title).to.eql(pm.collectionVariables.get(\"posts.1.title\"));",
+									"            pm.expect(jsonData[i].content).to.eql(pm.collectionVariables.get(\"posts.1.content\"));",
+									"            pm.expect(''+jsonData[i].author).to.eql(''+pm.collectionVariables.get(\"users.1.id\"));",
+									"            pm.expect(jsonData[i].hasOwnProperty(\"publication_datetime\")).to.eql(true);",
+									"            post1Found = true;",
+									"        } else if (jsonData[i].id == id2) {",
+									"            pm.expect(jsonData[i].title).to.eql(pm.collectionVariables.get(\"posts.2.title\"));",
+									"            pm.expect(jsonData[i].content).to.eql(pm.collectionVariables.get(\"posts.2.content\"));",
+									"            pm.expect(''+jsonData[i].author).to.eql(''+pm.collectionVariables.get(\"users.2.id\"));",
+									"            pm.expect(jsonData[i].hasOwnProperty(\"publication_datetime\")).to.eql(true);",
+									"            post2Found = true;",
+									"        }",
+									"    }",
+									"    pm.expect(post1Found && post2Found).to.eql(true);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{liis_url}}/{{tester}}/posts",
+							"host": [
+								"{{liis_url}}"
+							],
+							"path": [
+								"{{tester}}",
+								"posts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get post 1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Check post 1 receiving response body\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.title).to.eql(pm.collectionVariables.get(\"posts.1.title\"));",
+									"    pm.expect(jsonData.content).to.eql(pm.collectionVariables.get(\"posts.1.content\"));",
+									"    pm.expect(''+jsonData.author).to.eql(''+pm.collectionVariables.get(\"users.1.id\"));",
+									"    pm.expect(jsonData.hasOwnProperty(\"publication_datetime\")).to.eql(true);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{liis_url}}/{{tester}}/post/{{posts.1.id}}",
+							"host": [
+								"{{liis_url}}"
+							],
+							"path": [
+								"{{tester}}",
+								"post",
+								"{{posts.1.id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get post 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Check post 2 receiving response body\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.title).to.eql(pm.collectionVariables.get(\"posts.2.title\"));",
+									"    pm.expect(jsonData.content).to.eql(pm.collectionVariables.get(\"posts.2.content\"));",
+									"    pm.expect(''+jsonData.author).to.eql(''+pm.collectionVariables.get(\"users.2.id\"));",
+									"    pm.expect(jsonData.hasOwnProperty(\"publication_datetime\")).to.eql(true);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{liis_url}}/{{tester}}/post/{{posts.2.id}}",
+							"host": [
+								"{{liis_url}}"
+							],
+							"path": [
+								"{{tester}}",
+								"post",
+								"{{posts.2.id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Put post tests",
+			"item": [
+				{
+					"name": "Valid put post by user 1",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Put post by user 1 status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Put post response body by user 1\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.eql(\"updated\");",
+									"    pm.expect(jsonData.type).to.eql(\"success\");",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "{{users.1.name}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"update+{{posts.1.title}}\",\n    \"content\": \"{{posts.1.content}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{liis_url}}/{{tester}}/post/{{posts.1.id}}",
+							"host": [
+								"{{liis_url}}"
+							],
+							"path": [
+								"{{tester}}",
+								"post",
+								"{{posts.1.id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Forbidden to put post of user 1 by user 2",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Put post of user 1 by user 2 status code is 403\", function () {",
+									"    pm.response.to.have.status(403);",
+									"});",
+									"",
+									"pm.test(\"Put post of user 1 by user 2 response body check\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.eql(\"Forbidden\");",
+									"    pm.expect(jsonData.type).to.eql(\"error\");",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "{{users.2.name}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"update+{{posts.1.title}}\",\n    \"content\": \"{{posts.1.content}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{liis_url}}/{{tester}}/post/{{posts.1.id}}",
+							"host": [
+								"{{liis_url}}"
+							],
+							"path": [
+								"{{tester}}",
+								"post",
+								"{{posts.1.id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid put post (unavailable field)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Put post with unavailable field status code is 422\", function () {",
+									"    pm.response.to.have.status(422);",
+									"});",
+									"",
+									"pm.test(\"Put post with unavailable field response body check\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.author[0]).to.eql(\"Unknown field.\");",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "{{users.1.name}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"update+{{posts.1.title}}\",\n    \"content\": \"{{posts.1.content}}\",\n    \"author\": 1751\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{liis_url}}/{{tester}}/post/{{posts.1.id}}",
+							"host": [
+								"{{liis_url}}"
+							],
+							"path": [
+								"{{tester}}",
+								"post",
+								"{{posts.1.id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Post comments tests",
+			"item": [
+				{
+					"name": "Post comment for post 1 by user 1",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set(\"comments.1.title\", Utils.GenerateGUID())\r",
+									"pm.collectionVariables.set(\"comments.1.content\", Utils.GenerateGUID())"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Post comment for post 1 by user 1 status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Check comment creation response body for post 1 by user 1\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.title).to.eql(pm.collectionVariables.get(\"comments.1.title\"));\r",
+									"    pm.expect(jsonData.content).to.eql(pm.collectionVariables.get(\"comments.1.content\"));\r",
+									"    pm.expect(''+jsonData.author).to.eql(''+pm.collectionVariables.get(\"users.1.id\"));\r",
+									"    pm.expect(jsonData.hasOwnProperty(\"publication_datetime\")).to.eql(true);\r",
+									"    pm.collectionVariables.set(\"comments.1.id\", jsonData.id);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{users.1.name}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"{{comments.1.title}}\",\n    \"content\": \"{{comments.1.content}}\",\n    \"post\": {{posts.1.id}}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{liis_url}}/{{tester}}/comments",
+							"host": [
+								"{{liis_url}}"
+							],
+							"path": [
+								"{{tester}}",
+								"comments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post comment for post 1 by user 2",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set(\"comments.2.title\", Utils.GenerateGUID())\r",
+									"pm.collectionVariables.set(\"comments.2.content\", Utils.GenerateGUID())"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Post comment for post 1 by user 2 status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Check comment creation response body for post 1 by user 2\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.title).to.eql(pm.collectionVariables.get(\"comments.2.title\"));\r",
+									"    pm.expect(jsonData.content).to.eql(pm.collectionVariables.get(\"comments.2.content\"));\r",
+									"    pm.expect(''+jsonData.author).to.eql(''+pm.collectionVariables.get(\"users.2.id\"));\r",
+									"    pm.expect(jsonData.hasOwnProperty(\"publication_datetime\")).to.eql(true);\r",
+									"    pm.collectionVariables.set(\"comments.2.id\", jsonData.id);\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "{{users.2.name}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"{{comments.2.title}}\",\n    \"content\": \"{{comments.2.content}}\",\n    \"post\": {{posts.1.id}}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{liis_url}}/{{tester}}/comments",
+							"host": [
+								"{{liis_url}}"
+							],
+							"path": [
+								"{{tester}}",
+								"comments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post comment for post 2 by user 1",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set(\"comments.3.title\", Utils.GenerateGUID())\r",
+									"pm.collectionVariables.set(\"comments.3.content\", Utils.GenerateGUID())"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Post comment for post 2 by user 1 status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Check comment creation response body for post 2 by user 1\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.title).to.eql(pm.collectionVariables.get(\"comments.3.title\"));\r",
+									"    pm.expect(jsonData.content).to.eql(pm.collectionVariables.get(\"comments.3.content\"));\r",
+									"    pm.expect(''+jsonData.author).to.eql(''+pm.collectionVariables.get(\"users.1.id\"));\r",
+									"    pm.expect(jsonData.hasOwnProperty(\"publication_datetime\")).to.eql(true);\r",
+									"    pm.collectionVariables.set(\"comments.3.id\", jsonData.id);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{users.1.name}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"{{comments.3.title}}\",\n    \"content\": \"{{comments.3.content}}\",\n    \"post\": {{posts.2.id}}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{liis_url}}/{{tester}}/comments",
+							"host": [
+								"{{liis_url}}"
+							],
+							"path": [
+								"{{tester}}",
+								"comments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post comment for post 2 by user 2",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set(\"comments.4.title\", Utils.GenerateGUID())\r",
+									"pm.collectionVariables.set(\"comments.4.content\", Utils.GenerateGUID())"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Post comment for post 2 by user 2 status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Check comment creation response body for post 2 by user 2\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.title).to.eql(pm.collectionVariables.get(\"comments.4.title\"));\r",
+									"    pm.expect(jsonData.content).to.eql(pm.collectionVariables.get(\"comments.4.content\"));\r",
+									"    pm.expect(''+jsonData.author).to.eql(''+pm.collectionVariables.get(\"users.2.id\"));\r",
+									"    pm.expect(jsonData.hasOwnProperty(\"publication_datetime\")).to.eql(true);\r",
+									"    pm.collectionVariables.set(\"comments.4.id\", jsonData.id);\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "{{users.2.name}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"{{comments.4.title}}\",\n    \"content\": \"{{comments.4.content}}\",\n    \"post\": {{posts.2.id}}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{liis_url}}/{{tester}}/comments",
+							"host": [
+								"{{liis_url}}"
+							],
+							"path": [
+								"{{tester}}",
+								"comments"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Get comments tests",
+			"item": [
+				{
+					"name": "Get comments",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Check created comments\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    let id1 = pm.collectionVariables.get(\"comments.1.id\");",
+									"    let comment1Found = false;",
+									"    let id2 = pm.collectionVariables.get(\"comments.2.id\");",
+									"    let comment2Found = false;",
+									"    let id3 = pm.collectionVariables.get(\"comments.3.id\");",
+									"    let comment3Found = false;",
+									"    let id4 = pm.collectionVariables.get(\"comments.4.id\");",
+									"    let comment4Found = false;",
+									"    for (let i = 0; i < jsonData.length; i++) {",
+									"        let commentNumber;",
+									"        let userNumber;",
+									"        let postNumber;",
+									"        if (jsonData[i].id == id1) {",
+									"            commentNumber = \"comments.1\";",
+									"            userNumber = \"users.1\";",
+									"            postNumber = \"posts.1\";",
+									"            comment1Found = true;",
+									"        } else if (jsonData[i].id == id2) {",
+									"            commentNumber = \"comments.2\";",
+									"            userNumber = \"users.2\";",
+									"            postNumber = \"posts.1\";",
+									"            comment2Found = true;",
+									"        } else if (jsonData[i].id == id3) {",
+									"            commentNumber = \"comments.3\";",
+									"            userNumber = \"users.1\";",
+									"            postNumber = \"posts.2\";",
+									"            comment3Found = true;",
+									"        } else if (jsonData[i].id == id4) {",
+									"            commentNumber = \"comments.4\";",
+									"            userNumber = \"users.2\";",
+									"            postNumber = \"posts.2\";",
+									"            comment4Found = true;",
+									"        }",
+									"",
+									"        if (commentNumber != null) {",
+									"            pm.expect(jsonData[i].title).to.eql(pm.collectionVariables.get(commentNumber + \".title\"));",
+									"            pm.expect(jsonData[i].content).to.eql(pm.collectionVariables.get(commentNumber + \".content\"));",
+									"            pm.expect(''+jsonData[i].author).to.eql(''+pm.collectionVariables.get(userNumber + \".id\"));",
+									"            pm.expect(''+jsonData[i].post).to.eql(''+pm.collectionVariables.get(postNumber + \".id\"));",
+									"            pm.expect(jsonData[i].hasOwnProperty(\"publication_datetime\")).to.eql(true);",
+									"        }",
+									"    }",
+									"    pm.expect(comment1Found && comment2Found && comment3Found && comment4Found).to.eql(true);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{liis_url}}/{{tester}}/comments",
+							"host": [
+								"{{liis_url}}"
+							],
+							"path": [
+								"{{tester}}",
+								"comments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get comment 1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Check comment 1 receiving response body\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.title).to.eql(pm.collectionVariables.get(\"comments.1.title\"));",
+									"    pm.expect(jsonData.content).to.eql(pm.collectionVariables.get(\"comments.1.content\"));",
+									"    pm.expect(''+jsonData.author).to.eql(''+pm.collectionVariables.get(\"users.1.id\"));",
+									"    pm.expect(''+jsonData.post).to.eql(''+pm.collectionVariables.get(\"posts.1.id\"));",
+									"    pm.expect(jsonData.hasOwnProperty(\"publication_datetime\")).to.eql(true);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{liis_url}}/{{tester}}/comment/{{comments.1.id}}",
+							"host": [
+								"{{liis_url}}"
+							],
+							"path": [
+								"{{tester}}",
+								"comment",
+								"{{comments.1.id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get comment 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Check comment 2 receiving response body\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.title).to.eql(pm.collectionVariables.get(\"comments.2.title\"));",
+									"    pm.expect(jsonData.content).to.eql(pm.collectionVariables.get(\"comments.2.content\"));",
+									"    pm.expect(''+jsonData.author).to.eql(''+pm.collectionVariables.get(\"users.2.id\"));",
+									"    pm.expect(''+jsonData.post).to.eql(''+pm.collectionVariables.get(\"posts.1.id\"));",
+									"    pm.expect(jsonData.hasOwnProperty(\"publication_datetime\")).to.eql(true);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{liis_url}}/{{tester}}/comment/{{comments.2.id}}",
+							"host": [
+								"{{liis_url}}"
+							],
+							"path": [
+								"{{tester}}",
+								"comment",
+								"{{comments.2.id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get comment 3",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Check comment 3 receiving response body\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.title).to.eql(pm.collectionVariables.get(\"comments.3.title\"));",
+									"    pm.expect(jsonData.content).to.eql(pm.collectionVariables.get(\"comments.3.content\"));",
+									"    pm.expect(''+jsonData.author).to.eql(''+pm.collectionVariables.get(\"users.1.id\"));",
+									"    pm.expect(''+jsonData.post).to.eql(''+pm.collectionVariables.get(\"posts.2.id\"));",
+									"    pm.expect(jsonData.hasOwnProperty(\"publication_datetime\")).to.eql(true);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{liis_url}}/{{tester}}/comment/{{comments.3.id}}",
+							"host": [
+								"{{liis_url}}"
+							],
+							"path": [
+								"{{tester}}",
+								"comment",
+								"{{comments.3.id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get comment 4",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Check comment 4 receiving response body\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.title).to.eql(pm.collectionVariables.get(\"comments.4.title\"));",
+									"    pm.expect(jsonData.content).to.eql(pm.collectionVariables.get(\"comments.4.content\"));",
+									"    pm.expect(''+jsonData.author).to.eql(''+pm.collectionVariables.get(\"users.2.id\"));",
+									"    pm.expect(''+jsonData.post).to.eql(''+pm.collectionVariables.get(\"posts.2.id\"));",
+									"    pm.expect(jsonData.hasOwnProperty(\"publication_datetime\")).to.eql(true);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{liis_url}}/{{tester}}/comment/{{comments.4.id}}",
+							"host": [
+								"{{liis_url}}"
+							],
+							"path": [
+								"{{tester}}",
+								"comment",
+								"{{comments.4.id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Put comments tests",
+			"item": [
+				{
+					"name": "Valid put comment 1 by user 1",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Put comment 1 by user 1 status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Check put comment 1 response body by user 1\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.eql(\"updated\");",
+									"    pm.expect(jsonData.type).to.eql(\"success\");",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "{{users.1.name}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"update+{{comments.1.title}}\",\n    \"content\": \"{{comments.1.content}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{liis_url}}/{{tester}}/comment/{{comments.1.id}}",
+							"host": [
+								"{{liis_url}}"
+							],
+							"path": [
+								"{{tester}}",
+								"comment",
+								"{{comments.1.id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Forbidden to put comments of user 1 by user 2",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Put comment of user 1 by user 2 status code is 403\", function () {",
+									"    pm.response.to.have.status(403);",
+									"});",
+									"",
+									"pm.test(\"Put comment of user 1 by user 2 response body check\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.eql(\"Forbidden\");",
+									"    pm.expect(jsonData.type).to.eql(\"error\");",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "{{users.2.name}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"update+{{comments.1.title}}\",\n    \"content\": \"{{comments.1.content}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{liis_url}}/{{tester}}/comment/{{comments.1.id}}",
+							"host": [
+								"{{liis_url}}"
+							],
+							"path": [
+								"{{tester}}",
+								"comment",
+								"{{comments.1.id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid put comment (unavailable field)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Put comment with unavailable field status code is 422\", function () {",
+									"    pm.response.to.have.status(422);",
+									"});",
+									"",
+									"pm.test(\"Put comment with unavailable field response body check\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.author[0]).to.eql(\"Unknown field.\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "{{users.1.name}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"update+{{comments.1.title}}\",\n    \"content\": \"{{comments.1.content}}\",\n    \"author\": 1751\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{liis_url}}/{{tester}}/comment/{{comments.1.id}}",
+							"host": [
+								"{{liis_url}}"
+							],
+							"path": [
+								"{{tester}}",
+								"comment",
+								"{{comments.1.id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Delete comment tests",
+			"item": [
+				{
+					"name": "Forbidden to delete post of user 1 by user 2",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Delete comment of user 1 by user 2 status code is 403\", function () {",
+									"    pm.response.to.have.status(403);",
+									"});",
+									"",
+									"pm.test(\"Delete comment of user 1 by user 2 response body check\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.eql(\"Forbidden\");",
+									"    pm.expect(jsonData.type).to.eql(\"error\");",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "{{users.2.name}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{liis_url}}/{{tester}}/comment/{{comments.1.id}}",
+							"host": [
+								"{{liis_url}}"
+							],
+							"path": [
+								"{{tester}}",
+								"comment",
+								"{{comments.1.id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete comment 1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Delete comment 1 by user 1 status code is 204\", function () {",
+									"    pm.response.to.have.status(204);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "{{users.1.name}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{liis_url}}/{{tester}}/comment/{{comments.1.id}}",
+							"host": [
+								"{{liis_url}}"
+							],
+							"path": [
+								"{{tester}}",
+								"comment",
+								"{{comments.1.id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete comment 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Delete comment 2 by user 2 status code is 204\", function () {",
+									"    pm.response.to.have.status(204);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "{{users.2.name}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{liis_url}}/{{tester}}/comment/{{comments.2.id}}",
+							"host": [
+								"{{liis_url}}"
+							],
+							"path": [
+								"{{tester}}",
+								"comment",
+								"{{comments.2.id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete comment 3",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Delete comment 3 by user 1 status code is 204\", function () {",
+									"    pm.response.to.have.status(204);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "{{users.1.name}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{liis_url}}/{{tester}}/comment/{{comments.3.id}}",
+							"host": [
+								"{{liis_url}}"
+							],
+							"path": [
+								"{{tester}}",
+								"comment",
+								"{{comments.3.id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete comment 4",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Delete comment 4 by user 2 status code is 204\", function () {",
+									"    pm.response.to.have.status(204);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "{{users.2.name}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{liis_url}}/{{tester}}/comment/{{comments.4.id}}",
+							"host": [
+								"{{liis_url}}"
+							],
+							"path": [
+								"{{tester}}",
+								"comment",
+								"{{comments.4.id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Delete post tests",
+			"item": [
+				{
+					"name": "Forbidden to delete post of user 1 by user 2",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Delete post of user 1 by user 2 status code is 403\", function () {",
+									"    pm.response.to.have.status(403);",
+									"});",
+									"",
+									"pm.test(\"Delete post of user 1 by user 2 response body check\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.eql(\"Forbidden\");",
+									"    pm.expect(jsonData.type).to.eql(\"error\");",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "{{users.2.name}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{liis_url}}/{{tester}}/post/{{posts.1.id}}",
+							"host": [
+								"{{liis_url}}"
+							],
+							"path": [
+								"{{tester}}",
+								"post",
+								"{{posts.1.id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete post 1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Delete post by user 1 status code is 204\", function () {",
+									"    pm.response.to.have.status(204);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "{{users.1.name}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{liis_url}}/{{tester}}/post/{{posts.1.id}}",
+							"host": [
+								"{{liis_url}}"
+							],
+							"path": [
+								"{{tester}}",
+								"post",
+								"{{posts.1.id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete post 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Delete post by user 2 status code is 204\", function () {",
+									"    pm.response.to.have.status(204);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "{{users.2.name}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{liis_url}}/{{tester}}/post/{{posts.2.id}}",
+							"host": [
+								"{{liis_url}}"
+							],
+							"path": [
+								"{{tester}}",
+								"post",
+								"{{posts.2.id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"Utils = {",
+					"    GenerateGUID() {",
+					"        var uuid = require('uuid');",
+					"        return uuid.v4();",
+					"    }",
+					"}"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "tester",
+			"value": "lianarechkina@yandex.ru",
+			"type": "string"
+		},
+		{
+			"key": "password",
+			"value": "12345",
+			"type": "string"
+		},
+		{
+			"key": "liis_url",
+			"value": "https://hr.recruit.liis.su/qa0/{{api_version}}/api",
+			"type": "string"
+		},
+		{
+			"key": "api_version",
+			"value": "v1",
+			"type": "string"
+		},
+		{
+			"key": "users.1.name",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "users.1.id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "users.2.name",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "users.2.id",
+			"value": ""
+		},
+		{
+			"key": "posts.1.title",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "posts.1.content",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "posts.1.id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "posts.2.title",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "posts.2.content",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "posts.2.id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "comments.1.id",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "comments.1.title",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "comments.1.content",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "comments.2.id",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "comments.2.title",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "comments.2.content",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "comments.3.id",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "comments.3.title",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "comments.3.content",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "comments.4.id",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "comments.4.title",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "comments.4.content",
+			"value": "",
+			"type": "default"
+		}
+	]
+}
